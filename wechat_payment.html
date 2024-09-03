@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信支付</title>
+</head>
+<body>
+    <button id="payButton">立即支付</button>
+
+    <script>
+        document.getElementById('payButton').addEventListener('click', function() {
+            var payData = {
+                "appId": "wx4f19186d5f873b09",
+                "timeStamp": "1725350463",
+                "nonceStr": "wrlwnsjyfgKtSsNH",
+                "package": "prepay_id=wx03160103512345092f6316c1481cd40001",
+                "signType": "MD5",
+                "paySign": "7306223BE1109B1F705B31FE8138E437"
+            };
+
+            function onBridgeReady(){
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', payData,
+                    function(res){
+                        if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                            alert("支付成功");
+                        } else {
+                            alert("支付失败：" + res.err_msg);
+                        }
+                    }
+                ); 
+            }
+
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                } else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                }
+            } else {
+                onBridgeReady();
+            }
+        });
+    </script>
+</body>
+</html>
